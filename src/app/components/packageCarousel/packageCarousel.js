@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FreeMode, Navigation, Thumbs, Autoplay, Pagination } from "swiper";
 
-
 const PackageCarousel = ({
   propertyPackages,
   loading,
@@ -17,23 +16,26 @@ const PackageCarousel = ({
     return <div>Loading...</div>;
   }
 
+  // Calculate the maximum width based on the number of packages
+  const maxWidthClass = propertyPackages?.length === 1 ? 'max-w-md' : 'max-w-full';
+
   return (
-    <div className="relative">
+    <div className={`relative mx-auto ${maxWidthClass}`}>
       <Swiper
-        modules={[Navigation,Autoplay]}
+        modules={[Navigation, Autoplay]}
         spaceBetween={24}
         slidesPerView={1}
-        navigation
+        navigation={propertyPackages?.length > 1} // Only show navigation if more than 1 package
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
         }}
         breakpoints={{
           500: {
-            slidesPerView: 2,
+            slidesPerView: propertyPackages?.length >= 2 ? 2 : 1,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: propertyPackages?.length >= 3 ? 3 : propertyPackages?.length,
           },
           1280: {
             slidesPerView: propertyPackages?.length < 4 ? propertyPackages.length : 4,
@@ -64,7 +66,7 @@ const PackageCarousel = ({
                   />
                 </div>
                 <div className="flex font-semibold flex-1 flex-col p-[12px] shadow-lg w-full">
-                <h2 className={`font-heading text-[18px] font-bold text-blue-900 pb-2`}>
+                  <h2 className={`font-heading text-[18px] font-bold text-blue-900 pb-2`}>
                     {pkg.unit_name}
                   </h2>
                   <p className={`text-gray-800 text-[16px]`}>
@@ -136,16 +138,13 @@ const PackageCarousel = ({
                             );
                           })()
                         ) : (
-                          // Regular price without discount
                           <span>
                             {Math.floor(pkg.price[0].price)} TK
                           </span>
                         )}
-                        {/* Per person indicator */}
                         <span className="text-gray-500 text-[14px] ml-1">(Per person)</span>
                       </p>
                     ) : (
-                      // Price not available
                       <p className="text-[15px] text-red-500">
                         Price: Not Available
                       </p>
@@ -154,7 +153,6 @@ const PackageCarousel = ({
                 </div>
               </div>
             </div>
-            
           </SwiperSlide>
         ))}
       </Swiper>
@@ -163,9 +161,7 @@ const PackageCarousel = ({
         .package-swiper .swiper-button-next,
         .package-swiper .swiper-button-prev {
           color: white;
-         
-        background: linear-gradient(90deg, #313881, #0678B4);
-            
+          background: linear-gradient(90deg, #313881, #0678B4);
           width: 40px;
           height: 40px;
           border-radius: 50%;

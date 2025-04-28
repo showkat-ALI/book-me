@@ -143,7 +143,7 @@ export default async function Home() {
                     <div className="flex-1 space-y-3">
                       {country?.properties?.map((property, idx) => (
                         <div key={idx}>
-                          <p className="text-gray-900 font-semibold line-clamp-2 mb-3">
+                          <p className="text-gray-800 font-semibold line-clamp-2 mb-3">
                             {property?.property_summaries[2]?.value || "Visa Description not available"}
                           </p>
                           
@@ -151,8 +151,8 @@ export default async function Home() {
                             <div className="flex items-center">
                               <TbCurrentLocation className="w-5 h-5 mr-2 text-black" />
                               <span className="">
-                                <span className="text-gray-600 font-semibold">Currency : </span>
-                                <span className="font-bold text-gray-900">
+                                <span className="text-gray-700 font-semibold ">Currency : </span>
+                                <span className="font-bold text-gray-800">
                                   {property?.property_summaries[0]?.value || "N/A"}
                                 </span>
                               </span>
@@ -161,8 +161,8 @@ export default async function Home() {
                             <div className="flex items-center">
                               <IoTime className="w-5 h-5 mr-2 text-black" />
                               <span className="">
-                                <span className="text-gray-600 font-semibold">Local time : </span>
-                                <span className="font-bold text-gray-900">
+                                <span className="text-gray-700 font-semibold ">Local time : </span>
+                                <span className="font-bold text-gray-800">
                                   {property?.property_summaries[1]?.value || "N/A"}
                                 </span>
                               </span>
@@ -176,7 +176,7 @@ export default async function Home() {
                       {country?.properties?.[0]?.property_uinit?.[0]?.price?.[0]?.price ? (
                         <p className="text-lg font-semibold text-blue-600">
                           BDT {Math.ceil(country.properties[0]?.property_uinit[0]?.price[0]?.price)}
-                          <span className="text-sm font-normal text-gray-500 ml-1">/person</span>
+                          <span className="text-[16px] font-normal text-gray-700 ml-1">/person</span>
                         </p>
                       ) : (
                         <p className="text-red-500 font-semibold">Price not available</p>
