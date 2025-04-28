@@ -109,84 +109,85 @@ export default async function Home() {
             Popular Visa Destinations
           </h2>
           
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {visaData.map((country, ind) => (
-              <Link 
-                key={ind}  
-                href={`/visa/${country?.id}`}
-                className="group block text-gray-800 hover:text-gray-900 transition-colors"
-              >
-                <div className="bg-white rounded-xl shadow-md overflow-hidden h-full flex flex-col transition-all duration-300 group-hover:shadow-lg">
-                  {/* Image Container */}
-                  <div className="relative h-[180px] md:h-[200px] w-full bg-gray-100">
-                    {country?.image ? (
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/storage/${country.image}`}
-                        alt={country?.name || "Country image"}
-                        fill
-                        className="object-fill"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-400">No Image</span>
-                      </div>
-                    )}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+  {visaData.map((country, ind) => (
+    <Link 
+      key={country?.id || ind}  
+      href={`/visa/${country?.id}`}
+      className="group block text-gray-800 hover:text-gray-900 transition-colors"
+    >
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md overflow-hidden h-full flex flex-col transition-all duration-300 group-hover:shadow-lg hover:shadow-md">
+        {/* Image Container */}
+        <div className="relative h-[150px] sm:h-[180px] md:h-[200px] w-full bg-gray-100">
+          {country?.image ? (
+            <Image
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}/storage/${country.image}`}
+              alt={country?.name || "Country image"}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              priority={ind < 4} // Only prioritize first few images
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+              <span className="text-gray-400 text-sm">No Image Available</span>
+            </div>
+          )}
+        </div>
+        
+        {/* Content Container */}
+        <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col">
+          <h3 className="text-lg sm:text-xl font-bold text-blue-800 mb-2 sm:mb-3 line-clamp-2">
+            {country?.name || "Country Name"}
+          </h3>
+
+          <div className="flex-1 space-y-2 sm:space-y-3">
+            {country?.properties?.slice(0, 1).map((property, idx) => (
+              <div key={idx}>
+                <p className="text-sm sm:text-base text-gray-800 font-medium sm:font-semibold line-clamp-2 mb-2 sm:mb-3">
+                  {property?.property_summaries?.[2]?.value || "Visa information not available"}
+                </p>
+                
+                <div className="space-y-1 sm:space-y-2">
+                  <div className="flex items-center">
+                    <TbCurrentLocation className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-gray-600" />
+                    <span className="text-xs sm:text-sm">
+                      <span className="text-gray-600 font-medium">Currency: </span>
+                      <span className="font-semibold text-gray-800">
+                        {property?.property_summaries?.[0]?.value || "N/A"}
+                      </span>
+                    </span>
                   </div>
                   
-                  {/* Content Container */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold text-blue-800 mb-3 line-clamp-2">
-                      {country?.name || "Country Name"}
-                    </h3>
-
-                    <div className="flex-1 space-y-3">
-                      {country?.properties?.map((property, idx) => (
-                        <div key={idx}>
-                          <p className="text-gray-800 font-semibold line-clamp-2 mb-3">
-                            {property?.property_summaries[2]?.value || "Visa Description not available"}
-                          </p>
-                          
-                          <div className="space-y-2">
-                            <div className="flex items-center">
-                              <TbCurrentLocation className="w-5 h-5 mr-2 text-black" />
-                              <span className="">
-                                <span className="text-gray-700 font-semibold ">Currency : </span>
-                                <span className="font-bold text-gray-800">
-                                  {property?.property_summaries[0]?.value || "N/A"}
-                                </span>
-                              </span>
-                            </div>
-                            
-                            <div className="flex items-center">
-                              <IoTime className="w-5 h-5 mr-2 text-black" />
-                              <span className="">
-                                <span className="text-gray-700 font-semibold ">Local time : </span>
-                                <span className="font-bold text-gray-800">
-                                  {property?.property_summaries[1]?.value || "N/A"}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                      {country?.properties?.[0]?.property_uinit?.[0]?.price?.[0]?.price ? (
-                        <p className="text-lg font-semibold text-blue-600">
-                          BDT {Math.ceil(country.properties[0]?.property_uinit[0]?.price[0]?.price)}
-                          <span className="text-[16px] font-normal text-gray-700 ml-1">/person</span>
-                        </p>
-                      ) : (
-                        <p className="text-red-500 font-semibold">Price not available</p>
-                      )}
-                    </div>
+                  <div className="flex items-center">
+                    <IoTime className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-gray-600" />
+                    <span className="text-xs sm:text-sm">
+                      <span className="text-gray-600 font-medium">Local time: </span>
+                      <span className="font-semibold text-gray-800">
+                        {property?.property_summaries?.[1]?.value || "N/A"}
+                      </span>
+                    </span>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
+
+          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
+            {country?.properties?.[0]?.property_uinit?.[0]?.price?.[0]?.price ? (
+              <p className="text-base sm:text-lg font-semibold text-blue-600">
+                BDT {Math.ceil(country.properties[0].property_uinit[0].price[0].price).toLocaleString()}
+                <span className="text-xs sm:text-[16px] font-normal text-gray-600 ml-1">/person</span>
+              </p>
+            ) : (
+              <p className="text-red-500 text-sm sm:text-base font-medium sm:font-semibold">Price not available</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </Link>
+  ))}
+</div>
         </div>
       </section>
     </div>
